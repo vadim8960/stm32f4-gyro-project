@@ -1,74 +1,23 @@
-/* USER CODE BEGIN Header */
-/**
-  ******************************************************************************
-  * @file           : main.c
-  * @brief          : Main program body
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
-  * All rights reserved.</center></h2>
-  *
-  * This software component is licensed by ST under Ultimate Liberty license
-  * SLA0044, the "License"; You may not use this file except in compliance with
-  * the License. You may obtain a copy of the License at:
-  *                             www.st.com/SLA0044
-  *
-  ******************************************************************************
-  */
-/* USER CODE END Header */
-
 /* Includes ------------------------------------------------------------------*/
+#include "stm32f4xx_hal_adc.h"
 #include "main.h"
-#include "stm32f4xx_hal_adc_ex.h"
-
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
-
-/* USER CODE END Includes */
-
-/* Private typedef -----------------------------------------------------------*/
-/* USER CODE BEGIN PTD */
-
-/* USER CODE END PTD */
-
-/* Private define ------------------------------------------------------------*/
-/* USER CODE BEGIN PD */
-
-/* USER CODE END PD */
-
-/* Private macro -------------------------------------------------------------*/
-/* USER CODE BEGIN PM */
-
-/* USER CODE END PM */
+#include "STLISY300AL.h"
 
 /* Private variables ---------------------------------------------------------*/
+
 ADC_HandleTypeDef hadc1;
 
 UART_HandleTypeDef huart3;
 
-/* USER CODE BEGIN PV */
-
-/* USER CODE END PV */
+Lisy300al gyro;
 
 /* Private function prototypes -----------------------------------------------*/
+
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART3_UART_Init(void);
 static void MX_ADC1_Init(void);
-/* USER CODE BEGIN PFP */
 
-/* USER CODE END PFP */
-
-/* Private user code ---------------------------------------------------------*/
-/* USER CODE BEGIN 0 */
-
-/* USER CODE END 0 */
-
-/**
-  * @brief  The application entry point.
-  * @retval int
-  */
 int main(void)
 {
   /* USER CODE BEGIN 1 */
@@ -95,6 +44,7 @@ int main(void)
   MX_GPIO_Init();
   MX_USART3_UART_Init();
   MX_ADC1_Init();
+  Init_Lisy300al(&gyro, &hadc1);
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -102,18 +52,19 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 
-  uint8_t data[100] = {};
+  uint8_t data[100];
 
 
   while (1)
   {
-	  HAL_ADC_Start(&hadc1);
-	  HAL_ADC_PollForConversion(&hadc1, 100);
-	  uint16_t gyro = HAL_ADC_GetValue(&hadc1);
-	  HAL_ADC_Stop(&hadc1);
-//	  uint16_t gyro = HAL_GPIO_ReadPin(ADC1, ANALOG_GYRO_Pin);
+//	  HAL_ADC_Start(&hadc1);
+//	  HAL_ADC_PollForConversion(&hadc1, 100);
+//	  uint16_t gyro = HAL_ADC_GetValue(&hadc1);
+//	  HAL_ADC_Stop(&hadc1);
 
-	  sprintf(data, "%d\r\n", gyro);
+	  float value = get_position(&gyro, &hadc1);
+
+	  sprintf(data, "%d \r\n", (int)(value));
 
 	  HAL_UART_Transmit(&huart3, data, 100, 0xFFFF);
 
