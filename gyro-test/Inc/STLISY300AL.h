@@ -2,7 +2,7 @@
 #define __STLISY300AL_H__
 
 #include "math.h"
-#include "stm32f4xx_hal_adc.h"
+#include "stm32f4xx_hal.h"
 
 #define GYRO_SENSETIVITY   0.0033
 #define ANALOG_SENSETIVITY 0.0008

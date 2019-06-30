@@ -1,6 +1,5 @@
 Src/STLISY300AL.o: ../Src/STLISY300AL.c \
  /home/vadim/programs/stm32/stm32f4-gyro-project/gyro-test/Inc/STLISY300AL.h \
- /home/vadim/programs/stm32/stm32f4-gyro-project/gyro-test/Inc/main.h \
  /home/vadim/programs/stm32/stm32f4-gyro-project/gyro-test/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
  /home/vadim/programs/stm32/stm32f4-gyro-project/gyro-test/Inc/stm32f4xx_hal_conf.h \
  /home/vadim/programs/stm32/stm32f4-gyro-project/gyro-test/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h \
@@ -31,8 +30,6 @@ Src/STLISY300AL.o: ../Src/STLISY300AL.c \
  /home/vadim/programs/stm32/stm32f4-gyro-project/gyro-test/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 
 /home/vadim/programs/stm32/stm32f4-gyro-project/gyro-test/Inc/STLISY300AL.h:
-
-/home/vadim/programs/stm32/stm32f4-gyro-project/gyro-test/Inc/main.h:
 
 /home/vadim/programs/stm32/stm32f4-gyro-project/gyro-test/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 

@@ -2,6 +2,7 @@
 
 void Init_Lisy300al(Lisy300al *gyro, ADC_HandleTypeDef *adc) {
 	gyro->curr_position = .0f;
+	gyro->zero_position = 0;
 	for (uint8_t iter = 0; iter < 10; ++iter) {
 		HAL_ADC_Start(adc);
 		HAL_ADC_PollForConversion(adc, 100);

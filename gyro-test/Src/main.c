@@ -1,6 +1,7 @@
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f4xx_hal_adc.h"
+
 #include "main.h"
+#include <stdio.h>
 #include "STLISY300AL.h"
 
 /* Private variables ---------------------------------------------------------*/
@@ -17,6 +18,9 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART3_UART_Init(void);
 static void MX_ADC1_Init(void);
+
+#define GYRO_SENSETIVITY   0.0033
+#define ANALOG_SENSETIVITY 0.0008
 
 int main(void)
 {
@@ -52,23 +56,63 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 
-  uint8_t data[100];
+  uint8_t data[100] = {};
 
+  uint32_t zero_pos = 0;
+  uint64_t lasttook = 0;
+  uint64_t timetook = 0;
+  float angle       = 0;
+
+  for (uint8_t iter = 0; iter < 10; ++iter) {
+	  HAL_ADC_Start(&hadc1);
+	  HAL_ADC_PollForConversion(&hadc1, 100);
+	  zero_pos += HAL_ADC_GetValue(&hadc1);
+	  HAL_ADC_Stop(&hadc1);
+	  HAL_Delay(10);
+  }
+
+  zero_pos /= 10;
 
   while (1)
   {
-//	  HAL_ADC_Start(&hadc1);
-//	  HAL_ADC_PollForConversion(&hadc1, 100);
-//	  uint16_t gyro = HAL_ADC_GetValue(&hadc1);
-//	  HAL_ADC_Stop(&hadc1);
+	  HAL_ADC_Start(&hadc1);
+	  HAL_ADC_PollForConversion(&hadc1, 100);
+	  uint16_t gyro_x = HAL_ADC_GetValue(&hadc1);
+	  HAL_ADC_Stop(&hadc1);
 
-	  float value = get_position(&gyro, &hadc1);
+	  int16_t change = 0;
 
-	  sprintf(data, "%d \r\n", (int)(value));
+	  if (fabs(gyro_x - zero_pos) > 200)
+		  change = gyro_x - zero_pos;
+
+	  lasttook = timetook;
+	  timetook = HAL_GetTick();
+
+	  float time = ( (float)(timetook) - (float)(lasttook) ) / 1000.0f;
+
+	  float degchange = change * time * ANALOG_SENSETIVITY / GYRO_SENSETIVITY;
+
+	  angle += degchange;
+
+	  if (angle > 360) angle -= 360;
+	  if (angle < 0)   angle += 360;
+
+	  sprintf(data, "value = %1.5f \r\n", angle);
 
 	  HAL_UART_Transmit(&huart3, data, 100, 0xFFFF);
 
-	  HAL_Delay(10);
+	  HAL_Delay(100);
+
+
+//	  float value = get_position(&gyro, &hadc1);
+//
+//	  sprintf(data, "%d \r\n", (int)(value));
+//
+//	  HAL_UART_Transmit(&huart3, data, 100, 0xFFFF);
+//
+//	  HAL_Delay(10);
+
+
 
     /* USER CODE END WHILE */
 

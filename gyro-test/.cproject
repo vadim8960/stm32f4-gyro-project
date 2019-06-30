@@ -51,6 +51,7 @@
 									<listOptionValue builtIn="false" value="STM32F407xx"/>
 								</option>
 								<option id="fr.ac6.managedbuild.gnu.c.compiler.option.misc.other.2095191357" superClass="fr.ac6.managedbuild.gnu.c.compiler.option.misc.other" useByScannerDiscovery="false" value="-fmessage-length=0" valueType="string"/>
+								<option id="gnu.c.compiler.option.dialect.std.1874556264" superClass="gnu.c.compiler.option.dialect.std" useByScannerDiscovery="true" value="gnu.c.compiler.dialect.default" valueType="enumerated"/>
 								<inputType id="fr.ac6.managedbuild.tool.gnu.cross.c.compiler.input.c.716545594" superClass="fr.ac6.managedbuild.tool.gnu.cross.c.compiler.input.c"/>
 								<inputType id="fr.ac6.managedbuild.tool.gnu.cross.c.compiler.input.s.272996978" superClass="fr.ac6.managedbuild.tool.gnu.cross.c.compiler.input.s"/>
 							</tool>
@@ -74,11 +75,11 @@
 								<inputType id="fr.ac6.managedbuild.tool.gnu.cross.cpp.compiler.input.cpp.500936228" superClass="fr.ac6.managedbuild.tool.gnu.cross.cpp.compiler.input.cpp"/>
 								<inputType id="fr.ac6.managedbuild.tool.gnu.cross.cpp.compiler.input.s.994326608" superClass="fr.ac6.managedbuild.tool.gnu.cross.cpp.compiler.input.s"/>
 							</tool>
-							<tool id="fr.ac6.managedbuild.tool.gnu.cross.c.linker.1053835676" name="MCU GCC Linker" superClass="fr.ac6.managedbuild.tool.gnu.cross.c.linker">
+							<tool command="gcc" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" id="fr.ac6.managedbuild.tool.gnu.cross.c.linker.1053835676" name="MCU GCC Linker" superClass="fr.ac6.managedbuild.tool.gnu.cross.c.linker">
 								<option id="fr.ac6.managedbuild.tool.gnu.cross.c.linker.script.366925822" name="Linker Script (-T)" superClass="fr.ac6.managedbuild.tool.gnu.cross.c.linker.script" value="../STM32F407VGTx_FLASH.ld" valueType="string"/>
 								<option id="gnu.c.link.option.libs.1661198543" name="Libraries (-l)" superClass="gnu.c.link.option.libs"/>
 								<option id="gnu.c.link.option.paths.1349666356" name="Library search path (-L)" superClass="gnu.c.link.option.paths"/>
-								<option id="gnu.c.link.option.ldflags.934244591" name="Linker flags" superClass="gnu.c.link.option.ldflags" value="-specs=nosys.specs -specs=nano.specs" valueType="string"/>
+								<option id="gnu.c.link.option.ldflags.934244591" name="Linker flags" superClass="gnu.c.link.option.ldflags" useByScannerDiscovery="false" value="-specs=nosys.specs -specs=nano.specs -u _printf_float" valueType="string"/>
 								<option id="gnu.c.link.option.other.41059369" name="Other options (-Xlinker [option])" superClass="gnu.c.link.option.other" useByScannerDiscovery="false"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.linker.input.1716245420" superClass="cdt.managedbuild.tool.gnu.c.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
