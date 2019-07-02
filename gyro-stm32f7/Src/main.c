@@ -58,6 +58,7 @@ static void MX_GPIO_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_USART3_UART_Init(void);
 static void MX_TIM7_Init(void);
+static void MX_GFXSIMULATOR_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -98,12 +99,16 @@ int main(void)
   MX_ADC1_Init();
   MX_USART3_UART_Init();
   MX_TIM7_Init();
+  MX_GFXSIMULATOR_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
+  HAL_TIM_Base_Start_IT(&htim7);
+
   while (1)
   {
     /* USER CODE END WHILE */
@@ -220,6 +225,27 @@ static void MX_ADC1_Init(void)
 }
 
 /**
+  * @brief GFXSIMULATOR Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_GFXSIMULATOR_Init(void)
+{
+
+  /* USER CODE BEGIN GFXSIMULATOR_Init 0 */
+
+  /* USER CODE END GFXSIMULATOR_Init 0 */
+
+  /* USER CODE BEGIN GFXSIMULATOR_Init 1 */
+
+  /* USER CODE END GFXSIMULATOR_Init 1 */
+  /* USER CODE BEGIN GFXSIMULATOR_Init 2 */
+
+  /* USER CODE END GFXSIMULATOR_Init 2 */
+
+}
+
+/**
   * @brief TIM7 Initialization Function
   * @param None
   * @retval None
@@ -237,9 +263,9 @@ static void MX_TIM7_Init(void)
 
   /* USER CODE END TIM7_Init 1 */
   htim7.Instance = TIM7;
-  htim7.Init.Prescaler = 0;
+  htim7.Init.Prescaler = 9599;
   htim7.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim7.Init.Period = 0;
+  htim7.Init.Period = 10000;
   htim7.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim7) != HAL_OK)
   {
@@ -306,14 +332,14 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin : LD2_Pin */
-  GPIO_InitStruct.Pin = LD2_Pin;
+  /*Configure GPIO pin : LED_Pin */
+  GPIO_InitStruct.Pin = LED_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(LED_GPIO_Port, &GPIO_InitStruct);
 
 }
 
