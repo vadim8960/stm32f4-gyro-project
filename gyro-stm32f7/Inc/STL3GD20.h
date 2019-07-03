@@ -10,19 +10,19 @@
 #define CTRL_REG5 0x24
 
 typedef struct {
-	uint8_t device_addr,
-			x_angle,
+	uint8_t device_addr;
+	int32_t x_angle,
 			y_angle,
 			z_angle;
 	I2C_HandleTypeDef hi2c;
 } L3gd20;
 
 void STL3GD20_Init(L3gd20*, I2C_HandleTypeDef, uint16_t);
-void STL3GD20_GetX(L3gd20*);
-void STL3GD20_GetY(L3gd20*);
-void STL3GD20_GetZ(L3gd20*);
+int32_t STL3GD20_GetX(L3gd20*);
+int32_t STL3GD20_GetY(L3gd20*);
+int32_t STL3GD20_GetZ(L3gd20*);
 
-static void writeRegister(uint8_t, uint8_t, uint8_t);
-static int32_t readRegister(uint8_t, uint8_t);
+static void writeRegister(I2C_HandleTypeDef*, uint8_t, uint8_t, uint8_t);
+static int32_t readRegister(I2C_HandleTypeDef*, uint8_t, uint8_t);
 
 #endif /*__STL3GD20_H__*/
