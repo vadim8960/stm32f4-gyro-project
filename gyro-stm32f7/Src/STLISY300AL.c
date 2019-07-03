@@ -1,6 +1,6 @@
 #include "STLISY300AL.h"
 
-void STLISY300AL_Init(Lisy300al *gyro, ADC_HandleTypeDef *adc, uint32_t sens){
+void STLISY300AL_Init(Lisy300al *gyro, ADC_HandleTypeDef *adc, uint32_t sensitivity){
 	gyro->zero_angle = .0f;
 	for (uint16_t _iter = 0; _iter < 100; ++_iter) {
 		HAL_ADC_Start(adc);
@@ -10,9 +10,11 @@ void STLISY300AL_Init(Lisy300al *gyro, ADC_HandleTypeDef *adc, uint32_t sens){
 		HAL_Delay(10);
 	}
 	gyro->zero_angle /= 100.0f;
-	gyro->curr_angle = gyro->last_angle = .0f;
-	gyro->last_time = gyro->last_time = 0;
-	gyro->sens = sens;
+	gyro->curr_angle = .0f;
+	gyro->last_angle = .0f;
+	gyro->last_time = 0;
+	gyro->last_time = 0;
+	gyro->sensitivity = sensitivity;
 }
 
 float STLISY300AL_GetAngle(Lisy300al *gyro) {
@@ -29,13 +31,13 @@ void STLISY300AL_Handler(Lisy300al *gyro, ADC_HandleTypeDef *adc) {
 	uint16_t data = HAL_ADC_GetValue(adc);
 	HAL_ADC_Stop(adc);
 
-	int16_t change = (my_abs(data - gyro->zero_angle) > gyro->sens) ? data - gyro->zero_angle : 0 ;
+	int32_t change = (my_abs(data - (uint32_t)(gyro->zero_angle)) > gyro->sensitivity) ? data - gyro->zero_angle : 0 ;
 
 	gyro->last_time = gyro->curr_time;
 	gyro->curr_time = HAL_GetTick();
 	float dt = ( (float)(gyro->curr_time) - (float)(gyro->last_time) ) / 1000.0f;
 
-	gyro->curr_angle += (change * 0.1 * ANALOG_SENSETIVITY / GYRO_SENSETIVITY);
+	gyro->curr_angle += (change * dt * ANALOG_SENSITIVITY / GYRO_SENSITIVITY);
 	if (gyro->curr_angle > 360.0f) gyro->curr_angle -= 360.0f;
 	if (gyro->curr_angle < .0f)    gyro->curr_angle += 360.0f;
 }

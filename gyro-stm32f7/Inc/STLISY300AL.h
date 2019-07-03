@@ -1,21 +1,18 @@
 #ifndef __STLISY300AL_H__
 #define __STLISY300AL_H__
 
-#include "math.h"
 #include "stm32f7xx_hal.h"
 
-#define GYRO_SENSETIVITY   0.0033
-#define ANALOG_SENSETIVITY 0.0008
-
-extern UART_HandleTypeDef huart3;
+#define GYRO_SENSITIVITY   0.0033
+#define ANALOG_SENSITIVITY 0.0008
 
 typedef struct{
 	float curr_angle,
 	      last_angle;
-	int32_t zero_angle,
-	        sens;
+	int32_t sensitivity;
 	uint32_t curr_time,
-	         last_time;
+	         last_time,
+			 zero_angle;
 } Lisy300al;
 
 void STLISY300AL_Init(Lisy300al*, ADC_HandleTypeDef*, uint32_t);
