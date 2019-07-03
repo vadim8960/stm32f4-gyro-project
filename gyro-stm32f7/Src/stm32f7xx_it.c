@@ -23,6 +23,7 @@
 #include "stm32f7xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "STLISY300AL.h"
 /* USER CODE END Includes */
   
 /* Private typedef -----------------------------------------------------------*/
@@ -58,9 +59,8 @@
 /* External variables --------------------------------------------------------*/
 extern ADC_HandleTypeDef hadc1;
 extern TIM_HandleTypeDef htim7;
-extern UART_HandleTypeDef huart3;
 /* USER CODE BEGIN EV */
-
+extern Lisy300al analog_gyro;
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -214,38 +214,26 @@ void ADC_IRQHandler(void)
 }
 
 /**
-  * @brief This function handles USART3 global interrupt.
-  */
-void USART3_IRQHandler(void)
-{
-  /* USER CODE BEGIN USART3_IRQn 0 */
-
-  /* USER CODE END USART3_IRQn 0 */
-  HAL_UART_IRQHandler(&huart3);
-  /* USER CODE BEGIN USART3_IRQn 1 */
-
-  /* USER CODE END USART3_IRQn 1 */
-}
-
-/**
   * @brief This function handles TIM7 global interrupt.
   */
 void TIM7_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM7_IRQn 0 */
 
+	STLISY300AL_Handler(&analog_gyro, &hadc1);
+
   /* USER CODE END TIM7_IRQn 0 */
   HAL_TIM_IRQHandler(&htim7);
   /* USER CODE BEGIN TIM7_IRQn 1 */
 
-  static uint64_t count = 0;
-  if (count % 2)
-	  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);
-  else
-	  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET);
-
-  ++count;
-
+//  static uint64_t count = 1;
+//
+//  if (count % 2)
+//	  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);
+//  else
+//	  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET);
+//
+//  ++count;
 
   /* USER CODE END TIM7_IRQn 1 */
 }
