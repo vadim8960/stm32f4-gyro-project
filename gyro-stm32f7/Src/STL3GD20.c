@@ -11,16 +11,16 @@ static int32_t readRegister(I2C_HandleTypeDef *hi2c, uint8_t device_addr, uint8_
 void STL3GD20_Init(L3gd20 *gyro, I2C_HandleTypeDef hi2c, uint16_t scale) {
 	gyro->device_addr = 0x6B;
 	gyro->hi2c = hi2c;
-	writeRegister(&(gyro->device_addr), gyro->device_addr, CTRL_REG1, 0b00001111);
-	writeRegister(&(gyro->device_addr), gyro->device_addr, CTRL_REG2, 0b00000000);
-	writeRegister(&(gyro->device_addr), gyro->device_addr, CTRL_REG3, 0b00001000);
+	writeRegister(&(gyro->hi2c), gyro->device_addr, CTRL_REG1, 0b00001111);
+	writeRegister(&(gyro->hi2c), gyro->device_addr, CTRL_REG2, 0b00000000);
+	writeRegister(&(gyro->hi2c), gyro->device_addr, CTRL_REG3, 0b00001000);
 	if (scale == 250)
-		writeRegister(&(gyro->device_addr), gyro->device_addr, CTRL_REG4, 0b00000000);
+		writeRegister(&(gyro->hi2c), gyro->device_addr, CTRL_REG4, 0b00000000);
 	else if (scale == 500)
-		writeRegister(&(gyro->device_addr), gyro->device_addr, CTRL_REG4, 0b00010000);
+		writeRegister(&(gyro->hi2c), gyro->device_addr, CTRL_REG4, 0b00010000);
 	else
-		writeRegister(&(gyro->device_addr), gyro->device_addr, CTRL_REG4, 0b00110000);
-	writeRegister(&(gyro->device_addr), gyro->device_addr, CTRL_REG4, 0b00000000);
+		writeRegister(&(gyro->hi2c), gyro->device_addr, CTRL_REG4, 0b00110000);
+	writeRegister(&(gyro->hi2c), gyro->device_addr, CTRL_REG4, 0b00000000);
 }
 
 int32_t STL3GD20_GetX(L3gd20 *gyro) {
