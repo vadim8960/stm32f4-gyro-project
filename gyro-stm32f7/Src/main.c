@@ -24,6 +24,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "STLISY300AL.h"
+#include "STL3GD20.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -52,6 +53,8 @@ UART_HandleTypeDef huart3;
 
 /* USER CODE BEGIN PV */
 Lisy300al analog_gyro;
+
+L3gd20 i2c_gyro;
 
 uint8_t write_data[100] = {};
 /* USER CODE END PV */
@@ -108,16 +111,22 @@ int main(void)
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
   STLISY300AL_Init(&analog_gyro, &hadc1, 30);
+  STL3GD20_Init(&i2c_gyro, hi2c1, 2000);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 
-  HAL_TIM_Base_Start_IT(&htim7);
+  //HAL_TIM_Base_Start_IT(&htim7);
 
   while (1)
   {
-
+	  int32_t x = STL3GD20_WhoAmI(&i2c_gyro);
+	  int32_t y = STL3GD20_Status(&i2c_gyro);
+	  int32_t a = STL3GD20_GetX(&i2c_gyro);
+	  sprintf(write_data, "I2C addr %d\nError: %d\nAngle: %d\r\n\n", x, y, a);
+	  HAL_UART_Transmit(&huart3, write_data, 100, 1000);
+	  HAL_Delay(100);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
