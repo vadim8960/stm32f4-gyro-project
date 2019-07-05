@@ -111,7 +111,7 @@ int main(void)
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
   STLISY300AL_Init(&analog_gyro, &hadc1, 30);
-  STL3GD20_Init(&i2c_gyro, hi2c1, 2000);
+  STL3GD20_Init(&i2c_gyro, hi2c1, 250);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -121,11 +121,13 @@ int main(void)
 
   while (1)
   {
-	  int32_t x = STL3GD20_WhoAmI(&i2c_gyro);
-	  int32_t y = STL3GD20_Status(&i2c_gyro);
-	  int32_t a = STL3GD20_GetX(&i2c_gyro);
-	  sprintf(write_data, "I2C addr %d\nError: %d\nAngle: %d\r\n\n", x, y, a);
-	  HAL_UART_Transmit(&huart3, write_data, 100, 1000);
+	  int32_t id = STL3GD20_WhoAmI(&i2c_gyro);
+	  int32_t err = STL3GD20_Status(&i2c_gyro);
+	  int32_t x = STL3GD20_GetX(&i2c_gyro);
+	  int32_t y = STL3GD20_GetY(&i2c_gyro);
+	  int32_t z = STL3GD20_GetZ(&i2c_gyro);
+	  sprintf(write_data, "I2C addr %d\nError: %d\nAngle x: %d\nAngle y: %d\nAngle z: %d\r\n\n", id, err, x, y, z);
+	  HAL_UART_Transmit(&huart3, write_data, 100, 100);
 	  HAL_Delay(100);
     /* USER CODE END WHILE */
 
@@ -314,7 +316,7 @@ static void MX_I2C1_Init(void)
   * @retval None
   */
 static void MX_TIM7_Init(void)
-{
+{huart3.Init.BaudRate = 115200;
 
   /* USER CODE BEGIN TIM7_Init 0 */
 
@@ -362,7 +364,8 @@ static void MX_USART3_UART_Init(void)
 
   /* USER CODE END USART3_Init 1 */
   huart3.Instance = USART3;
-  huart3.Init.BaudRate = 115200;
+//  huart3.Init.BaudRate = 115200;
+  huart3.Init.BaudRate = 500000;
   huart3.Init.WordLength = UART_WORDLENGTH_8B;
   huart3.Init.StopBits = UART_STOPBITS_1;
   huart3.Init.Parity = UART_PARITY_NONE;

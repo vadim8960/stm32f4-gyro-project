@@ -62,14 +62,22 @@ int32_t STL3GD20_GetY(L3gd20 *gyro) {
 	uint8_t MSB = readRegister(&(gyro->hi2c), gyro->device_addr, 0x2B);
 	uint8_t LSB = readRegister(&(gyro->hi2c), gyro->device_addr, 0x2A);
 	gyro->y_angle = ((MSB << 8) | LSB);
-	return gyro->y_angle;
+	if (MSB != -1 && LSB != -1) {
+		gyro->y_angle = ((MSB << 8) | LSB);
+		return gyro->y_angle;
+	}
+	return -1;
 }
 
 int32_t STL3GD20_GetZ(L3gd20 *gyro) {
 	uint8_t MSB = readRegister(&(gyro->hi2c), gyro->device_addr, 0x2D);
 	uint8_t LSB = readRegister(&(gyro->hi2c), gyro->device_addr, 0x2C);
 	gyro->z_angle = ((MSB << 8) | LSB);
-	return gyro->z_angle;
+	if (MSB != -1 && LSB != -1) {
+		gyro->y_angle = ((MSB << 8) | LSB);
+		return gyro->y_angle;
+	}
+	return -1;
 }
 
 
